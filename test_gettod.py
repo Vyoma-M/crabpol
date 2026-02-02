@@ -118,16 +118,7 @@ class Get_TOD:
             with fits.open(
                 self.data_path + "M1/small_dataset_M1_{}.fits".format(det)
             ) as hdul:
-                if alpha == -0.32:
-                    data_uccc = ascii.read(self.data_path + "/PR2-3/UC_CC_RIMO-4.txt")
-                elif alpha == -0.35:
-                    data_uccc = ascii.read(
-                        self.data_path + "/PR2-3/UC_CC_RIMO-4_alpha-0.35.txt"
-                    )
-                elif alpha == -0.28:
-                    data_uccc = ascii.read(
-                        self.data_path + "/PR2-3/UC_CC_RIMO-4_alpha-0.28.txt"
-                    )
+                data_uccc = ascii.read(self.data_path + "/PR2-3/UC_CC_RIMO-4_alpha{}.txt".format(alpha))
                 uc_cc = np.array((data_uccc["UCxCC"]))
                 detnames = np.array((data_uccc["Detector-name"]))
                 if instrument == "HFI":
