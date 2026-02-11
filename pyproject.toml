@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "tau-A"
+version = "0.1.0"
+description = "A Python package for analysis of NPIPE TOD and IXPE observations of the Crab nebula (also known as Tau-A or M1)."
+authors = [
+    { name = "Vyoma Muralidhara", email = "vyoma1993@gmail.com" }
+]
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = [
+    "numpy",
+    "scipy",
+    "astropy",
+    "matplotlib",
+    "healpy"
+]
+requires-python = ">=3.8"
+classifiers=[
+        'Programming Language :: Python :: 3',
+        "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
+        "License :: OSI Approved :: MIT License",
+        'Operating System :: OS Independent',
+    ]
+[project.urls]
+"Repository" = "https://github.com/Vyoma-M/tau-A"
