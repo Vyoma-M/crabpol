@@ -24,6 +24,9 @@ class GetTODConfig:
     ------------
     instrument: str
         Planck instrument to load data for. Must be one of "HFI" or "LFI". Default is "HFI".
+    split: Optional[str]
+        'A' or 'B' to specify which NPIPE split of the focal plane to load. Default is None, 
+        which loads the full detector set for a frequency channel.
     data_path: Optional[str]
         Path to folder containing destriped Planck TOD files. If not provided, will use default path from `utils.get_data_path()`.
     alpha: float
@@ -51,6 +54,7 @@ class GetTODConfig:
         An instance of the `GetTODConfig` dataclass with the specified configuration.
     """
     instrument: str = "HFI"
+    split: Optional[str] = None
     data_path: Optional[str] = None
     alpha: float = -0.28
     freq: int = 100
@@ -149,7 +153,7 @@ provide a valid path to the folder containing destriped Planck TOD files."
             signal = data["signal"].ravel()
         return theta, phi, iweight, qweight, uweight, signal
 
-    def _get_tod(self, freq, nside):
+    def _get_tod(self, freq, nside, split=None):
         pixels = []
         iweights = []
         qweights = []
@@ -157,7 +161,10 @@ provide a valid path to the folder containing destriped Planck TOD files."
         signal = []
         thetas = []
         phis = []
-        dets = utils.get_dets(freq)
+        if split is not None:
+            dets = utils.get_dets_split(freq, split)
+        else:
+            dets = utils.get_dets(freq)
         for det in dets:
             theta, phi, iwt, qwt, uwt, sig = self._read_detector_arrays(det)
             thetas.append(theta)
@@ -178,7 +185,7 @@ provide a valid path to the folder containing destriped Planck TOD files."
         )
         return signal, pixels, pixweights
 
-    def _get_tod_withcc(self, freq, nside, alpha, instrument, bg_subtraction):
+    def _get_tod_withcc(self, freq, nside, alpha, instrument, bg_subtraction, split=None):
         pixels = []
         iweights = []
         qweights = []
@@ -186,7 +193,10 @@ provide a valid path to the folder containing destriped Planck TOD files."
         signal = []
         thetas = []
         phis = []
-        dets = utils.get_dets(freq)
+        if split is not None:
+            dets = utils.get_dets_split(freq, split)
+        else:
+            dets = utils.get_dets(freq)
         for det in dets:
             # read detector arrays
             theta, phi, iwt, qwt, uwt, sig = self._read_detector_arrays(det)
@@ -234,14 +244,17 @@ provide a valid path to the folder containing destriped Planck TOD files."
         )
         return signal, pixels, pixweights
 
-    def _get_tod_ongrid(self, coord, freq, npix, pixsize, coord_system="galactic"):
+    def _get_tod_ongrid(self, coord, freq, npix, pixsize, coord_system="galactic", split=None):
         iweights = []
         qweights = []
         uweights = []
         signal = []
         thetas = []
         phis = []
-        dets = utils.get_dets(freq)
+        if split is not None:
+            dets = utils.get_dets_split(freq, split)
+        else:
+            dets = utils.get_dets(freq)
         for det in dets:
             theta, phi, iwt, qwt, uwt, sig = self._read_detector_arrays(det)
             thetas.append(theta)

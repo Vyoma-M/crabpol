@@ -27,6 +27,7 @@ class MapMaker:
         npix=80,
         pixel_size=1.5,  # in arcminutes
         split=None,
+        tod_loader: Get_TOD = None,
     ):
         self.data_path = data_path
         self.alpha = alpha
@@ -68,9 +69,25 @@ class MapMaker:
                     self.alpha
                 )
             )
-
         # Validate data path
         self._validate_data_path()
+
+        # TOD loader: accept an injected loader or create one from same args
+        if tod_loader is not None:
+            self.tod_loader = tod_loader
+        else:
+            # construct Get_TOD using same configuration so behavior remains compatible
+            self.tod_loader = Get_TOD(
+                instrument=self.instrument,
+                split=self.split,
+                data_path=self.data_path,
+                alpha=self.alpha,
+                coord=self.coord,
+                coord_system=self.coord_system,
+                withcc=self.withcc,
+                f_bg=self.f_bg,
+                bg_subtraction=self.bg_subtraction,
+            )
 
     def _validate_data_path(self):
         if not os.path.exists(self.data_path):
@@ -85,16 +102,14 @@ class MapMaker:
             os.makedirs(Path(__name__).resolve().parent / "maps", exist_ok=True)
             path = Path(__name__).resolve().parent / "maps/"
         if split is not None:
-            dets = utils.get_dets_split(freq, split)
             mapname = "{}GHz_{}pix_{}_grid.fits".format(freq, npix, split)
         else:
-            dets = utils.get_dets(freq, instrument)
             mapname = "{}GHz_{}pix_grid.fits".format(freq, npix)
 
-        # Get TOD & coordinates on a grid
+        # Get TOD & coordinates on a grid using injected TOD loader
         print("Extracting TOD for {}GHz freq channel".format(freq))
-        x, y, xbinning, ybinning, signal, pixweights = Get_TOD._get_tod_ongrid(
-            self, dets, npix, pixel_size
+        x, y, xbinning, ybinning, signal, pixweights = self.tod_loader.tod_ongrid(
+            coord=self.coord, freq=freq, npix=npix, pixsize=pixel_size, coord_system=self.coord_system, split=split
         )
         print("Making map for {}GHz freq channel".format(freq))
 
@@ -120,15 +135,14 @@ class MapMaker:
             os.makedirs(Path(__name__).resolve().parent / "maps", exist_ok=True)
             path = Path(__name__).resolve().parent / "maps/"
         if split is not None:
-            dets = utils.get_dets_split(freq, split)
             mapname = "{}GHz_{}hpbinning_{}.fits".format(freq, nside, split)
         else:
-            dets = utils.get_dets(freq, instrument)
             mapname = "{}GHz_{}hpbinning.fits".format(freq, nside)
 
-        # Get TOD & coordinates on a grid
+        # Get TOD & coordinates using injected TOD loader
         print("Extracting TOD for {}GHz freq channel".format(freq))
-        signal, pixels, pixweights = Get_TOD._get_tod(self, dets, nside, nnz)
+        tod = self.tod_loader.tod(freq=freq, nside=nside, split=split)
+        signal, pixels, pixweights = tod.signal, tod.pixels, tod.weights
         print("Making map for {}GHz freq channel".format(freq))
 
         isamp = 0
