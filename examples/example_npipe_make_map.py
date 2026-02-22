@@ -4,8 +4,8 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__).removesuffix("/examples"), "/tau-A"))
 
-from ..tauA.gettod import Get_TOD, GetTODConfig
-from ..tauA.mapmaker import MapMaker
+from ..crabpol.gettod import Get_TOD, GetTODConfig
+from ..crabpol.mapmaker import MapMaker
 
 #Fix: 1) Configure (replace with your actual data path containing M1/ and PR2-3/)
 cfg = GetTODConfig(

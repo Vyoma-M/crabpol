@@ -14,6 +14,21 @@ And for the IXPE data:
 
 ![Static Badge](https://img.shields.io/badge/GitHub-Vyoma--M-blue?link=https%3A%2F%2Fgithub.com%2FVyoma-M)
 
+## Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
+- Setting up a development environment
+- Running tests and linters locally
+- Making pull requests
+- Code quality standards (black, isort, flake8, mypy)
+
+For quick local setup:
+```bash
+pip install -e .
+pip install -r requirements-dev.txt
+pre-commit install
+pytest
+```
 
 ## Acknowledgement
 If you found this package useful for your work, please cite my thesis:

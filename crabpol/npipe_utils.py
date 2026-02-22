@@ -2,6 +2,7 @@ import numpy as np
 import healpy as hp
 import os
 from pathlib import Path
+from typing import Optional
 from astropy.wcs import WCS
 from astropy.coordinates import SkyCoord
 from astropy import units as u
@@ -52,7 +53,7 @@ def get_path(name, path):
             return os.path.join(root, name)
 
 
-def get_data_path(subfolder: str = None):
+def get_data_path(subfolder: Optional[str] = None):
     env_data_path = os.getenv("NPIPE_DATA_DIR")
     if env_data_path:
         base_path = Path(env_data_path).expanduser().resolve()

@@ -1,8 +1,8 @@
 import sys
 import os
 # make the tau-A sources importable (adjust if running from repo root)
-sys.path.append(os.path.join(os.path.dirname(__file__).removesuffix("/examples"), "/tau-A"))
-from ..tauA.gettod import Get_TOD, GetTODConfig
+sys.path.append(os.path.join(os.path.dirname(__file__).removesuffix("/examples"), "/crabpol"))
+from ..crabpol.gettod import Get_TOD, GetTODConfig
 
 #FIX: #1) Configure (replace data_path with your local data folder)
 cfg = GetTODConfig(

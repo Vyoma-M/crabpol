@@ -4,9 +4,14 @@ These tests mock out filesystem I/O (FITS and ASCII reads) so they run
 as lightweight unit tests without Planck data files.
 """
 
+import sys
 import numpy as np
 from types import SimpleNamespace
 import os
+
+# Add parent directory to path to import gettod
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'crabpol'))
+
 import pytest
 import gettod
 from gettod import Get_TOD, GetTODConfig, TOD
@@ -62,7 +67,7 @@ def test_tod(monkeypatch, tmp_path):
     cfg = GetTODConfig(data_path=str(data_dir), nside=8, freq=100)
     loader = Get_TOD(config=cfg)
 
-    tod = loader.assemble_tod()
+    tod = loader.tod()
     assert isinstance(tod, TOD)
     assert tod.signal.size == 5
     assert tod.pixels.size == 5
@@ -92,4 +97,4 @@ def test_tod_withcc(monkeypatch, tmp_path):
     tod = loader.tod_withcc()
     assert isinstance(tod, TOD)
     # signal should be scaled by UCxCC (2.0)
-    assert np.all(tod.signal == struct["signal"].ravel() * 2.0)
+    assert np.allclose(tod.signal, struct["signal"].ravel() * 2.0)

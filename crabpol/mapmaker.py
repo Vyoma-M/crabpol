@@ -4,6 +4,8 @@ pixel size of 1.5' and 80 pixels along one side.
 """
 
 import os
+from typing import Optional, Sequence
+
 import npipe_utils as utils
 import numpy as np
 from pathlib import Path
@@ -15,20 +17,20 @@ from gettod import Get_TOD
 class MapMaker:
     def __init__(
         self,
-        instrument="HFI",
-        data_path=None,
-        alpha=-0.28,
-        coord=None,
-        coord_system="galactic",
-        withcc=False,
-        f_bg=None,
-        bg_subtraction=False,
-        nside=2048,
-        npix=80,
-        pixel_size=1.5,  # in arcminutes
-        split=None,
-        tod_loader: Get_TOD = None,
-    ):
+        instrument: str = "HFI",
+        data_path: Optional[str] = None,
+        alpha: float = -0.28,
+        coord: Optional[Sequence[float]] = None,
+        coord_system: str = "galactic",
+        withcc: bool = False,
+        f_bg: Optional[np.ndarray] = None,
+        bg_subtraction: bool = False,
+        nside: int = 2048,
+        npix: int = 80,
+        pixel_size: float = 1.5,  # in arcminutes
+        split: Optional[str] = None,
+        tod_loader: Optional[Get_TOD] = None,
+    ) -> None:
         self.data_path = data_path
         self.alpha = alpha
         self.instrument = instrument
@@ -109,7 +111,12 @@ class MapMaker:
         # Get TOD & coordinates on a grid using injected TOD loader
         print("Extracting TOD for {}GHz freq channel".format(freq))
         x, y, xbinning, ybinning, signal, pixweights = self.tod_loader.tod_ongrid(
-            coord=self.coord, freq=freq, npix=npix, pixsize=pixel_size, coord_system=self.coord_system, split=split
+            coord=self.coord,
+            freq=freq,
+            npix=npix,
+            pixsize=pixel_size,
+            coord_system=self.coord_system,
+            split=split,
         )
         print("Making map for {}GHz freq channel".format(freq))
 

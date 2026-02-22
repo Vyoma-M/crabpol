@@ -1,9 +1,10 @@
-""" Module for loading Planck Time-Ordered Data (TOD) for tau-A analysis.
+"""Module for loading Planck Time-Ordered Data (TOD) for tau-A analysis.
 Provides the `Get_TOD` class which can be configured with various parameters.
-One can then call methods like `tod()` or `tod_withcc()` to load the TOD data as a 
+One can then call methods like `tod()` or `tod_withcc()` to load the TOD data as a
 `TOD` object containing signal, pixel indices (or x-y coordinates for TOD projected
 onto a grid), and weights. The MapMaker class can then use this TOD object to perform mapmaking.
 """
+
 import os
 from dataclasses import dataclass, field
 from typing import Optional, Sequence, Dict
@@ -25,7 +26,7 @@ class GetTODConfig:
     instrument: str
         Planck instrument to load data for. Must be one of "HFI" or "LFI". Default is "HFI".
     split: Optional[str]
-        'A' or 'B' to specify which NPIPE split of the focal plane to load. Default is None, 
+        'A' or 'B' to specify which NPIPE split of the focal plane to load. Default is None,
         which loads the full detector set for a frequency channel.
     data_path: Optional[str]
         Path to folder containing destriped Planck TOD files. If not provided, will use default path from `utils.get_data_path()`.
@@ -47,12 +48,13 @@ class GetTODConfig:
         Nside parameter for HEALPix pixelization.
     planck_freq: Dict[str, Sequence[int]]
         Dictionary mapping instruments to their available frequency channels. Default is {"LFI": [30, 40, 70], "HFI": [100, 143, 217, 353, 545, 857]}.
-    
+
     Returns
     -----------
     GetTODConfig
         An instance of the `GetTODConfig` dataclass with the specified configuration.
     """
+
     instrument: str = "HFI"
     split: Optional[str] = None
     data_path: Optional[str] = None
@@ -124,10 +126,8 @@ class Get_TOD:
 
     def _validate_data_path(self):
         if os.path.isdir(self.data_path):
-            print(
-                f"Using {self.data_path} as the folder containing \
-destriped Planck TOD files."
-            )
+            print(f"Using {self.data_path} as the folder containing \
+destriped Planck TOD files.")
         elif not os.path.isdir(self.data_path):
             raise FileNotFoundError(
                 f"Data path {self.data_path} does not exist. Please \
@@ -185,7 +185,9 @@ provide a valid path to the folder containing destriped Planck TOD files."
         )
         return signal, pixels, pixweights
 
-    def _get_tod_withcc(self, freq, nside, alpha, instrument, bg_subtraction, split=None):
+    def _get_tod_withcc(
+        self, freq, nside, alpha, instrument, bg_subtraction, split=None
+    ):
         pixels = []
         iweights = []
         qweights = []
@@ -244,7 +246,9 @@ provide a valid path to the folder containing destriped Planck TOD files."
         )
         return signal, pixels, pixweights
 
-    def _get_tod_ongrid(self, coord, freq, npix, pixsize, coord_system="galactic", split=None):
+    def _get_tod_ongrid(
+        self, coord, freq, npix, pixsize, coord_system="galactic", split=None
+    ):
         iweights = []
         qweights = []
         uweights = []
