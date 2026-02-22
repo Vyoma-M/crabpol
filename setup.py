@@ -10,7 +10,7 @@ from setuptools import setup, find_namespace_packages
 #     sys.exit()
 
 setup(
-    name='tau-A',
+    name='crabpol',
     version='0.1.0',
     author='Vyoma Muralidhara',
     author_email='vyoma1993@gmail.com',
@@ -19,12 +19,12 @@ setup(
     long_description=open('README.md').read(),
     packages=find_namespace_packages(),
     package_data={
-        "tau-A": ["LICENSE"],
-        "tau-A.data": [
+        "crabpol": ["LICENSE"],
+        "crabpol.data": [
             "HFI_RIMO_R4.00.fits",
             "LFI_RIMO_R4.00.fits",
         ],
-        "tau-A.data.PR2-3": [
+        "crabpol.data.PR2-3": [
             "HFI_UC_CC_RIMO-4_alpha-0.28.txt",
             "HFI_UC_CC_RIMO-4_alpha-0.35.txt",
             "LFI_UC_CC_RIMO-4_alpha-0.35.txt",
@@ -33,7 +33,7 @@ setup(
     },
     include_package_data=True,
     long_description_content_type='text/markdown',
-    url='https://github.com/Vyoma-M/tau-A',
+    url='https://github.com/Vyoma-M/crabpol',
     classifiers=[
         'Programming Language :: Python :: 3',
         "Intended Audience :: Developers",

@@ -2,7 +2,7 @@
 requires = ["setuptools >= 77.0.3"]
 build-backend = "setuptools.build_meta"
 [project]
-name = "tau-A"
+name = "crabpol"
 version = "0.1.0"
 description = "A Python package for analysis of NPIPE TOD and IXPE observations of the Crab nebula (also known as Tau-A or M1)."
 authors = [
@@ -27,4 +27,4 @@ classifiers=[
         'Operating System :: OS Independent',
     ]
 [project.urls]
-"Repository" = "https://github.com/Vyoma-M/tau-A"
+"Repository" = "https://github.com/Vyoma-M/crabpol"

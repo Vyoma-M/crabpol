@@ -37,4 +37,4 @@ BibTex entry:
 
 Copyright 2026 Vyoma Muralidhara.
 
-tau-A is free software made available under the MIT License. For details see the LICENSE file.
+crabpol is free software made available under the MIT License. For details see the LICENSE file.
