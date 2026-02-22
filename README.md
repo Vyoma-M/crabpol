@@ -1,10 +1,16 @@
 # tau-A 
-This package contains the analysis tools for processing of observations of the Crab nebula (also known as Tau-A or M1) by Planck (microwave) and IXPE (X-ray) satellites. Specifically:
+This package contains the analysis tools for the processing of observations of the Crab nebula (also known as Tau-A or M1) by Planck (sub-mm wavelengths) and IXPE (X-ray wavelengths) satellites. Specifically, for the Planck data:
 1) Procurement of NPIPE Time-ordered Data (TOD)
 2) Implementation of mapmaking methods: libmadam wrapper, binning in HealPix pixelization scheme, binning onto a square grid with user-defined number of pixels/pixel size
 3) Computation of Unit Conversion (UC) and Colour Correction (CC) for a power-law SED and implementation of these corrections to NPIPE TOD using Planck RIMO files.
 4) Conversions between different coordinate systems.
 5) Visualisation tools to display Stokes I, Q, U maps of the object and an option to overplot polarization vectors.
+
+And for the IXPE data:
+1) Filtering of events within energy windows
+2) Application of corrections with the ARF and MRF files
+3) Map-making by binning the events onto a square grid (valid in flat-approximation)
+4) Visualisation tools to display Stokes I, Q, U maps of the object and an option to overplot polarization vectors.
 
 ![Static Badge](https://img.shields.io/badge/GitHub-Vyoma--M-blue?link=https%3A%2F%2Fgithub.com%2FVyoma-M)
 

@@ -3,6 +3,7 @@
 These tests mock out filesystem I/O (FITS and ASCII reads) so they run
 as lightweight unit tests without Planck data files.
 """
+
 import numpy as np
 from types import SimpleNamespace
 import os
@@ -80,13 +81,15 @@ def test_tod_withcc(monkeypatch, tmp_path):
     monkeypatch.setattr(gettod.fits, "open", lambda path: DummyHDUList(struct))
 
     # prepare a fake CC table
-    fake_cc = {"UCxCC": np.array([2.0]), "Detector-name": np.array(["DET1"]) }
+    fake_cc = {"UCxCC": np.array([2.0]), "Detector-name": np.array(["DET1"])}
     monkeypatch.setattr(gettod.ascii, "read", lambda path: fake_cc)
 
-    cfg = GetTODConfig(data_path=str(data_dir), nside=8, freq=100, withcc=True, bg_subtraction=False)
+    cfg = GetTODConfig(
+        data_path=str(data_dir), nside=8, freq=100, withcc=True, bg_subtraction=False
+    )
     loader = Get_TOD(config=cfg)
 
-    tod = loader.assemble_tod_withcc()
+    tod = loader.tod_withcc()
     assert isinstance(tod, TOD)
     # signal should be scaled by UCxCC (2.0)
     assert np.all(tod.signal == struct["signal"].ravel() * 2.0)

@@ -11,7 +11,7 @@ cfg = GetTODConfig(
     data_path=None,   # must contain M1/ and PR2-3/ subfolders
     withcc=True,
     bg_subtraction=True,
-    nside=2048,                       # required for assemble_tod
+    nside=1024,                       # required for assemble_tod
 )
 
 # 2) Instantiate loader
