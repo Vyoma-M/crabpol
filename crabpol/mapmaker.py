@@ -4,14 +4,14 @@ pixel size of 1.5' and 80 pixels along one side.
 """
 
 import os
+from pathlib import Path
 from typing import Optional, Sequence
 
+import healpy as hp
 import npipe_utils as utils
 import numpy as np
-from pathlib import Path
-import healpy as hp
-from scipy.linalg import pinv
 from gettod import Get_TOD
+from scipy.linalg import pinv
 
 
 class MapMaker:

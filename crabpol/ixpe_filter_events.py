@@ -7,9 +7,10 @@ to get the effective area and modulation factor for the filtered events. The fil
 are then saved to a new fits file in the specified data directory.
 """
 
+import ixpe_instrument as instrument
 import numpy as np
 from astropy.io import fits
-import ixpe_instrument as instrument
+
 
 
 class FilterEvents:

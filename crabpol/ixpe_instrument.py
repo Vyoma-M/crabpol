@@ -5,9 +5,10 @@ This module contains functions to
 factor for a given energy
 """
 
+import os
+
 import numpy as np
 from astropy.io import fits
-import os
 
 
 def chan_to_e(

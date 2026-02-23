@@ -1,10 +1,9 @@
-import numpy as np
-from astropy.io import fits
-from astropy.io import ascii
-import scipy.integrate as integrate
-from astropy.constants import k_B, c, h
-from astropy.table import Table
 import npipe_utils as utils
+import numpy as np
+import scipy.integrate as integrate
+from astropy.constants import c, h, k_B
+from astropy.io import ascii, fits
+from astropy.table import Table
 
 c = c.si.value  # speed of light in m/s
 h = h.si.value  # Planck constant in J.s

@@ -6,11 +6,11 @@ the visualization of polarization properties in astronomical data.
 """
 
 import numpy as np
-from matplotlib import pyplot as plt
-from astropy.io import fits
-from astropy.wcs import WCS
 from astropy import units
 from astropy.coordinates import SkyCoord
+from astropy.io import fits
+from astropy.wcs import WCS
+from matplotlib import pyplot as plt
 
 
 def pol_degree(maps):
