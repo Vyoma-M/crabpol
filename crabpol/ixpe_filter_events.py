@@ -12,6 +12,32 @@ from astropy.io import fits
 import ixpe_instrument as instrument
 
 class FilterEvents:
+    """
+    A class to filter the events within the specified energy range and create a new fits file with only the relevant columns for polarization analysis.
+    The columns extracted are: PI, energy, X, Y, Q, U, W_MOM, effective area (Aeff), and modulation factor (Modf).
+    Parameters:
+-----------
+events_path: str
+    The path to the events file (in fits format) to be filtered.
+resp_path: str
+    The path to the directory where the response files from CalDB were unpacked.
+data_dir: str
+    The directory where the filtered events file will be saved.
+detector: str
+    The detector to use (d1, d2, or d3).
+caldb_version: str
+    The CalDB version to use (e.g., '20170101').
+recon_version: str
+    The reconstruction version refers to the response matrix associated with the event reconstruction method used (eg. 'alpha075_02').
+min_energy: float
+    The minimum energy (in keV) for filtering the events.
+max_energy: float
+    The maximum energy (in keV) for filtering the events.
+    Methods:
+    --------
+    filter_events():
+        Filters the events based on the specified energy range and saves the filtered events to a new fits file in the specified data directory.
+    """
     def __init__(
         self,
         events_path,
