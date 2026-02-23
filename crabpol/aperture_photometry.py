@@ -1,5 +1,7 @@
 """Aperture photometry functions for estimating flux densities from 2D maps."""
+
 import numpy as np
+
 
 def jysr_area(numpix, pix_size):
     """
@@ -21,7 +23,7 @@ def jysr_area(numpix, pix_size):
 def int_area(data, eff_beam, num_pix, extent=None, pixel_size=None):
     """
     Return map with values outside the circular aperture set to zero.
-    
+
     Parameters
     ------------
     data: array
@@ -109,7 +111,7 @@ def sum_pixels(
     outer_extent: float
         Outer extent of the aperture in arcmin.
     inttype: str, optional
-        Type of aperture to compute flux density from: 
+        Type of aperture to compute flux density from:
         'circle' or 'annulus'. Default: 'circle'.
     inner_extent: float, optional
         Inner extent of the annulus in arcmin. Required if inttype is 'annulus'.

@@ -34,9 +34,7 @@ sumi = np.zeros((pa.shape[0], nnz))
 
 dets = utils.get_dets_split(f, split)
 for det in dets:
-    with fits.open(
-        os.path.join(path, "small_dataset_M1_{}.fits".format(det))
-    ) as hdul:
+    with fits.open(os.path.join(path, "small_dataset_M1_{}.fits".format(det))) as hdul:
         data = hdul[1].data
         cols = hdul[1].columns
         theta = data["theta"].ravel()
@@ -113,7 +111,7 @@ for i in np.arange(len(pa)):
             inner_extent=None,
             pix_size=1.5,
         )
-        # Estimate background flux by computing flux density in an annulus 1 deg. away 
+        # Estimate background flux by computing flux density in an annulus 1 deg. away
         # from centre of the tau-A field.
         f_bg = utils.int_annuli(
             map1,

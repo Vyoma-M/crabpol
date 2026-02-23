@@ -8,6 +8,7 @@ from astropy.coordinates import SkyCoord
 from astropy import units as u
 from astropy.io import fits, ascii
 
+
 # Functions for unit conversions
 def arcmin_to_deg(x):
     return x / 60.0

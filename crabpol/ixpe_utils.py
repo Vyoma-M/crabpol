@@ -123,7 +123,8 @@ def iram_wcs(
     side2=None,
 ):
     """Generate a WCS object for IRAM data using the header information from a FITS file. The WCS object can be used to convert between pixel coordinates and sky coordinates. The side1 and side2 parameters can be used to adjust the reference pixel coordinate if the map is not square.
-    ra_obj and dec_obj are the RA and Dec of the reference pixel in degrees, which can be adjusted as needed. The function reads the header of the specified FITS file to obtain the pixel size and other necessary information for generating the WCS object."""
+    ra_obj and dec_obj are the RA and Dec of the reference pixel in degrees, which can be adjusted as needed. The function reads the header of the specified FITS file to obtain the pixel size and other necessary information for generating the WCS object.
+    """
     hdu = fits.open(path_to_file)
     header = hdu[0].header
     hdu.close()

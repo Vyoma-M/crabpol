@@ -11,6 +11,7 @@ h = h.si.value  # Planck constant in J.s
 k_B = k_B.si.value  # Boltzmann constant in J/K
 T_CMB = 2.7255  # CMB temp. in K
 
+
 class PlanckColourCorrection:
     """
     A class to compute colour correction and unit conversion coefficients for Planck detectors
@@ -26,6 +27,7 @@ class PlanckColourCorrection:
         Kcmb_to_Mjysr(freq, freq_nominal, transmission): Computes unit conversion factor.
         compute_uc_cc(instrument='HFI', detind=None, alpha=-0.28): Computes UC and CC for all detectors and saves to file.
     """
+
     def __init__(self, instrument="HFI", alpha=-0.28):
         self.instrument = instrument
         self.alpha = alpha
@@ -64,13 +66,13 @@ class PlanckColourCorrection:
             integrate.simpson(transmission * (freq_nominal / freq), freq)
         )
         return weight
-    
+
     def compute_uc_cc(self, instrument="HFI", detind=None, alpha=-0.28):
         detnames = []
         # Get bandpass transmission and frequency info from Planck RIMO files.
         path = utils.get_data_path(subfolder="PR2-3")
         hdu = fits.open(path + instrument + "_RIMO_R4.00.fits")
-        if instrument=="HFI":
+        if instrument == "HFI":
             detind = np.arange(3, 47)
         else:
             detind = np.arange(3, 24)
@@ -86,10 +88,12 @@ class PlanckColourCorrection:
             det = float(detname.split("-")[0])
             detnames.append(detname)
             f = hdu[detind[i]].data["WAVENUMBER"]
-            if instrument=="HFI":
+            if instrument == "HFI":
                 f *= 1e-7 * c  # converting wave number to GHz
             trans = hdu[detind[i]].data["TRANSMISSION"]
-            cc[i] = self.bandpass_iras_to_alpha(f[1:] * 1e9, det * 1e9, trans[1:], alpha)
+            cc[i] = self.bandpass_iras_to_alpha(
+                f[1:] * 1e9, det * 1e9, trans[1:], alpha
+            )
             uc[i] = self.Kcmb_to_Mjysr(f[1:] * 1e9, det * 1e9, trans[1:])
 
         hdu.close()
@@ -99,6 +103,8 @@ class PlanckColourCorrection:
         tab["Colour-Correction"] = np.round(cc, 5)
         tab["UCxCC"] = np.round(uc * cc, 5)
         ascii.write(
-            tab, path + instrument + "_UC_CC_RIMO-4_alpha-{}.txt".format(alpha), overwrite=True
+            tab,
+            path + instrument + "_UC_CC_RIMO-4_alpha-{}.txt".format(alpha),
+            overwrite=True,
         )
         return detnames, uc, cc
