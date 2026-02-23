@@ -59,14 +59,6 @@ def int_area(data, center, num_pix, extent=20, pixel_size=0.00072):
                 maparea[:,i,j]=0.0
     return maparea
 
-def overlay_reg_arrows(center, maps, **kwargs):
-    x, y = calculate_sky_grid(center)
-    pd = pol_degree(maps)
-    q, u = normQU_to_qu(maps)
-    pa = position_angle_pol(q,u)
-    dx, dy = posanglepol_to_xy(pd, pa, deg=True)
-    plot_arrows((x, y), (dx, dy))
-
 def sum_area(region):
     """Calculate the total flux over a specific area of the data, defined by the region parameter. The region parameter is expected to be a boolean mask that identifies the area of interest in the data."""
     mask = region[0]>0.
@@ -83,14 +75,16 @@ def sum_area(region):
     a = position_angle_pol(q, u, deg=True)
     return p, a
 
-def plot_reg_arrows(x, y, dx, dy, scale):
+def plot_reg_arrows(grid, field, threshold=0., **kwargs):
     kwargs.setdefault('color', 'black')
     kwargs.setdefault('alpha', 1.0)
-    kwargs.setdefault('width', 0.003)
     kwargs.setdefault('headlength', 0.)
-    kwargs.setdefault('headwidth', 1.)
+    kwargs.setdefault('headwidth', 1.0)
     kwargs.setdefault('pivot', 'middle')
-    kwargs.setdefault('scale', scale)
+    kwargs.setdefault('scale', 8.0)
+    xmin, xmax, ymin, ymax = plt.axis()
+    x, y = grid
+    dx, dy = field
     plt.gca().quiver(x, y, dx, dy, **kwargs)
     plt.axis([xmin, xmax, ymin, ymax])
     
