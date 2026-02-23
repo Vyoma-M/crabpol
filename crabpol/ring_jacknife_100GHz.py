@@ -1,10 +1,11 @@
-import numpy as np
-from astropy.io import fits
+import os
+from typing import Any
+
 import healpy as hp
 import npipe_utils as utils
+import numpy as np
 import scipy
-import os
-from astropy.io import ascii
+from astropy.io import ascii, fits
 from astropy.table import Table
 
 nside = 2048
@@ -12,12 +13,12 @@ nnz = 3
 f = 100  # GHz
 path = utils.get_data_path(subfolder="data/")
 split = "A"
-pixels = []
-iweights = []
-qweights = []
-uweights = []
-signal = []
-rings = []
+pixels: list[Any] = []
+iweights: list[Any] = []
+qweights: list[Any] = []
+uweights: list[Any] = []
+signal: list[Any] = []
+rings: list[Any] = []
 
 # Nominal frequencies of Planck bands
 freq = np.array([30, 44, 70, 100, 143, 217, 353])  # GHz
@@ -34,9 +35,7 @@ sumi = np.zeros((pa.shape[0], nnz))
 
 dets = utils.get_dets_split(f, split)
 for det in dets:
-    with fits.open(
-        os.path.join(path, "small_dataset_M1_{}.fits".format(det))
-    ) as hdul:
+    with fits.open(os.path.join(path, "small_dataset_M1_{}.fits".format(det))) as hdul:
         data = hdul[1].data
         cols = hdul[1].columns
         theta = data["theta"].ravel()
@@ -55,33 +54,34 @@ pixweights = np.vstack(
         np.hstack(uweights),
     ]
 )
-signal = np.hstack(signal)
-pixels = np.hstack(pixels)
-rings = np.hstack(rings)
-pix_ids = np.array(sorted(list(set(pixels))))
-ring_ids = np.array(sorted(list(set(rings))))
+signal_array: np.ndarray[Any, np.dtype[Any]] = np.hstack(signal)
+pixels_array: np.ndarray[Any, np.dtype[Any]] = np.hstack(pixels)
+rings_array: np.ndarray[Any, np.dtype[Any]] = np.hstack(rings)
+pix_ids = np.array(sorted(list(set(pixels_array))))
+ring_ids = np.array(sorted(list(set(rings_array))))
 # Select rings for jackknife sampling
-pix_ids_2 = sorted(list(set(pixels[np.logical_and(rings > 1343, rings < 1370)])))
-pix_ids_2.extend(sorted(list(set(pixels[np.logical_and(rings > 6621, rings < 6651)]))))
-pix_ids_2.extend(
-    sorted(list(set(pixels[np.logical_and(rings > 12323, rings < 12350)])))
+pix_ids_2_list: list[int] = sorted(list(set(pixels_array[np.logical_and(rings_array > 1343, rings_array < 1370)])))
+pix_ids_2_list.extend(sorted(list(set(pixels_array[np.logical_and(rings_array > 6621, rings_array < 6651)]))))
+pix_ids_2_list.extend(
+    sorted(list(set(pixels_array[np.logical_and(rings_array > 12323, rings_array < 12350)])))
 )
-pix_ids_2.extend(
-    sorted(list(set(pixels[np.logical_and(rings > 17612, rings < 17646)])))
+pix_ids_2_list.extend(
+    sorted(list(set(pixels_array[np.logical_and(rings_array > 17612, rings_array < 17646)])))
 )
-pix_ids_2.extend(
-    sorted(list(set(pixels[np.logical_and(rings > 23115, rings < 23141)])))
+pix_ids_2_list.extend(
+    sorted(list(set(pixels_array[np.logical_and(rings_array > 23115, rings_array < 23141)])))
 )
-pix_ids_2.extend(
-    sorted(list(set(pixels[np.logical_and(rings > 23409, rings < 23439)])))
+pix_ids_2_list.extend(
+    sorted(list(set(pixels_array[np.logical_and(rings_array > 23409, rings_array < 23439)])))
 )
+pix_ids_2 = np.array(pix_ids_2_list)
 
 
 for i in np.arange(len(pa)):
     n = np.random.randint(0, len(pix_ids_2))
     pix_ids_3 = pix_ids_2.copy()
     element = pix_ids_3[n]
-    pix_ids_3.remove(element)
+    pix_ids_3 = np.delete(pix_ids_3, n)
     pix_ids_3 = np.array(pix_ids_3)
     bmap = np.zeros((12 * nside**2, nnz))
     # Make binned maps from TOD from the selected rings
@@ -113,7 +113,7 @@ for i in np.arange(len(pa)):
             inner_extent=None,
             pix_size=1.5,
         )
-        # Estimate background flux by computing flux density in an annulus 1 deg. away 
+        # Estimate background flux by computing flux density in an annulus 1 deg. away
         # from centre of the tau-A field.
         f_bg = utils.int_annuli(
             map1,

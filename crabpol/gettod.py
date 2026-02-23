@@ -5,16 +5,16 @@ One can then call methods like `tod()` or `tod_withcc()` to load the TOD data as
 onto a grid), and weights. The MapMaker class can then use this TOD object to perform mapmaking.
 """
 
+import logging
 import os
 from dataclasses import dataclass, field
-from typing import Optional, Sequence, Dict
+from typing import Dict, Optional, Sequence
 
-import npipe_utils as utils
-import numpy as np
-from astropy.io import fits, ascii
 import astropy.units as u
 import healpy as hp
-import logging
+import npipe_utils as utils
+import numpy as np
+from astropy.io import ascii, fits
 
 
 @dataclass
@@ -133,11 +133,10 @@ destriped Planck TOD files.")
                 f"Data path {self.data_path} does not exist. Please \
 provide a valid path to the folder containing destriped Planck TOD files."
             )
-        elif os.path.isfile(self.data_path):
-            raise IsADirectoryError(
-                f"Expected a folder containing destriped Planck TOD files, but found a\
-                    file path at: {self.data_path}\n"
-                f"Please provide the full path to the data folder."
+        elif not os.path.isdir(self.data_path):
+            raise FileNotFoundError(
+                f"Data path {self.data_path} does not exist. Please \
+ provide a valid path to the folder containing destriped Planck TOD files."
             )
 
     def _read_detector_arrays(self, det):

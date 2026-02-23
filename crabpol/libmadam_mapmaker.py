@@ -3,13 +3,13 @@ This is a wrapper script to use libmadam functionalities
 (https://github.com/hpc4cmb/libmadam) to make maps from
 Planck NPIPE destriped Time-Ordered Data (TOD).
 """
-
-import npipe_utils as utils
+from typing import Any
 import healpy as hp
+import libmadam_wrapper as madam
+import npipe_utils as utils
 import numpy as np
 from astropy.io import fits
 from mpi4py import MPI
-import libmadam_wrapper as madam
 
 comm = MPI.COMM_WORLD
 nside = 2048  # Healpix NSIDE
@@ -23,13 +23,13 @@ dets = utils.get_dets(freq)
 ndet = len(dets)
 
 # Define variables to import data from TOD FITS files
-timestamps = []
-pixels = []
-iweights = []
-qweights = []
-uweights = []
-signal = []
-periods = []
+timestamps: list[Any] = []
+pixels: list[Any] = []
+iweights: list[Any] = []
+qweights: list[Any] = []
+uweights: list[Any] = []
+signal: list[Any] = []
+periods: list[Any] = []
 offset = 0
 
 # Get TOD from FITS files
@@ -55,8 +55,8 @@ for det in dets:
             periods.append(offset + i + 1)
         offset += nsample
 
-timestamps = np.hstack(timestamps).astype(madam.TIMESTAMP_TYPE)
-pixels = np.hstack(pixels).astype(madam.PIXEL_TYPE)
+timestamps_array: np.ndarray[Any, np.dtype[Any]] = np.hstack(timestamps).astype(madam.TIMESTAMP_TYPE)
+pixels_array: np.ndarray[Any, np.dtype[Any]] = np.hstack(pixels).astype(madam.PIXEL_TYPE)
 pixweights = (
     np.vstack(
         [
@@ -68,11 +68,11 @@ pixweights = (
     .astype(madam.WEIGHT_TYPE)
     .flatten("F")
 )
-signal = np.hstack(signal).astype(madam.SIGNAL_TYPE)
-periods = np.array(periods)
+signal_array: np.ndarray[Any, np.dtype[Any]] = np.hstack(signal).astype(madam.SIGNAL_TYPE)
+periods_array: np.ndarray[Any, np.dtype[Any]] = np.array(periods)
 
-nsample = timestamps.size
-fsample = 1 / np.median(np.diff(timestamps))
+nsample = timestamps_array.size
+fsample = 1 / np.median(np.diff(timestamps_array))
 
 # Treat the entire dataset as if coming from a single detector
 
@@ -92,7 +92,7 @@ psdvals = np.zeros(npsdval)
 
 # NPIPE data is destriped, so the madam instance will only bin the
 # TOD at the defined NSIDE.
-pars = {}
+pars: dict[str, Any] = {}
 pars["kfirst"] = False  # Remember that NPIPE data is already destriped
 pars["base_first"] = 1000000  # Full periods
 pars["kfilter"] = False
@@ -118,11 +118,11 @@ madam.destripe(
     pars,
     dets,
     detweights,
-    timestamps,
-    pixels,
+    timestamps_array,
+    pixels_array,
     pixweights,
-    signal,
-    periods,
+    signal_array,
+    periods_array,
     npsd,
     psdstarts,
     psdfreqs,
