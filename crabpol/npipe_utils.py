@@ -10,7 +10,6 @@ from astropy.io import ascii, fits
 from astropy.wcs import WCS
 
 
-
 # Functions for unit conversions
 def arcmin_to_deg(x):
     return x / 60.0

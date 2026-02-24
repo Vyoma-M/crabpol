@@ -12,7 +12,6 @@ import numpy as np
 from astropy.io import fits
 
 
-
 class FilterEvents:
     """
         A class to filter the events within the specified energy range and create a new fits file with only the relevant columns for polarization analysis.
