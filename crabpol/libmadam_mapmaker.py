@@ -5,6 +5,7 @@ Planck NPIPE destriped Time-Ordered Data (TOD).
 """
 
 from typing import Any
+
 import healpy as hp
 import libmadam_wrapper as madam
 import npipe_utils as utils
