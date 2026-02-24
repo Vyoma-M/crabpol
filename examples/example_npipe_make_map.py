@@ -1,13 +1,17 @@
 """Example script to make a binned map in HEALPix pixelization scheme
 from destriped NPIPE TOD using MapMaker."""
+
 import sys
 import os
-sys.path.append(os.path.join(os.path.dirname(__file__).removesuffix("/examples"), "/tau-A"))
+
+sys.path.append(
+    os.path.join(os.path.dirname(__file__).removesuffix("/examples"), "/tau-A")
+)
 
 from ..crabpol.gettod import Get_TOD, GetTODConfig
 from ..crabpol.mapmaker import MapMaker
 
-#Fix: 1) Configure (replace with your actual data path containing M1/ and PR2-3/)
+# Fix: 1) Configure (replace with your actual data path containing M1/ and PR2-3/)
 cfg = GetTODConfig(
     instrument="HFI",
     data_path=None,

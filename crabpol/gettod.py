@@ -126,8 +126,10 @@ class Get_TOD:
 
     def _validate_data_path(self):
         if os.path.isdir(self.data_path):
-            print(f"Using {self.data_path} as the folder containing \
-destriped Planck TOD files.")
+            print(
+                f"Using {self.data_path} as the folder containing \
+destriped Planck TOD files."
+            )
         elif not os.path.isdir(self.data_path):
             raise FileNotFoundError(
                 f"Data path {self.data_path} does not exist. Please \

@@ -10,7 +10,7 @@ from types import SimpleNamespace
 import os
 
 # Add parent directory to path to import gettod
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'crabpol'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "crabpol"))
 
 import pytest
 import gettod
