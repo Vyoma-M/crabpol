@@ -60,19 +60,41 @@ rings_array: np.ndarray[Any, np.dtype[Any]] = np.hstack(rings)
 pix_ids = np.array(sorted(list(set(pixels_array))))
 ring_ids = np.array(sorted(list(set(rings_array))))
 # Select rings for jackknife sampling
-pix_ids_2_list: list[int] = sorted(list(set(pixels_array[np.logical_and(rings_array > 1343, rings_array < 1370)])))
-pix_ids_2_list.extend(sorted(list(set(pixels_array[np.logical_and(rings_array > 6621, rings_array < 6651)]))))
-pix_ids_2_list.extend(
-    sorted(list(set(pixels_array[np.logical_and(rings_array > 12323, rings_array < 12350)])))
+pix_ids_2_list: list[int] = sorted(
+    list(set(pixels_array[np.logical_and(rings_array > 1343, rings_array < 1370)]))
 )
 pix_ids_2_list.extend(
-    sorted(list(set(pixels_array[np.logical_and(rings_array > 17612, rings_array < 17646)])))
+    sorted(
+        list(set(pixels_array[np.logical_and(rings_array > 6621, rings_array < 6651)]))
+    )
 )
 pix_ids_2_list.extend(
-    sorted(list(set(pixels_array[np.logical_and(rings_array > 23115, rings_array < 23141)])))
+    sorted(
+        list(
+            set(pixels_array[np.logical_and(rings_array > 12323, rings_array < 12350)])
+        )
+    )
 )
 pix_ids_2_list.extend(
-    sorted(list(set(pixels_array[np.logical_and(rings_array > 23409, rings_array < 23439)])))
+    sorted(
+        list(
+            set(pixels_array[np.logical_and(rings_array > 17612, rings_array < 17646)])
+        )
+    )
+)
+pix_ids_2_list.extend(
+    sorted(
+        list(
+            set(pixels_array[np.logical_and(rings_array > 23115, rings_array < 23141)])
+        )
+    )
+)
+pix_ids_2_list.extend(
+    sorted(
+        list(
+            set(pixels_array[np.logical_and(rings_array > 23409, rings_array < 23439)])
+        )
+    )
 )
 pix_ids_2 = np.array(pix_ids_2_list)
 

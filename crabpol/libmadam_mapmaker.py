@@ -3,6 +3,7 @@ This is a wrapper script to use libmadam functionalities
 (https://github.com/hpc4cmb/libmadam) to make maps from
 Planck NPIPE destriped Time-Ordered Data (TOD).
 """
+
 from typing import Any
 import healpy as hp
 import libmadam_wrapper as madam
@@ -55,8 +56,12 @@ for det in dets:
             periods.append(offset + i + 1)
         offset += nsample
 
-timestamps_array: np.ndarray[Any, np.dtype[Any]] = np.hstack(timestamps).astype(madam.TIMESTAMP_TYPE)
-pixels_array: np.ndarray[Any, np.dtype[Any]] = np.hstack(pixels).astype(madam.PIXEL_TYPE)
+timestamps_array: np.ndarray[Any, np.dtype[Any]] = np.hstack(timestamps).astype(
+    madam.TIMESTAMP_TYPE
+)
+pixels_array: np.ndarray[Any, np.dtype[Any]] = np.hstack(pixels).astype(
+    madam.PIXEL_TYPE
+)
 pixweights = (
     np.vstack(
         [
@@ -68,7 +73,9 @@ pixweights = (
     .astype(madam.WEIGHT_TYPE)
     .flatten("F")
 )
-signal_array: np.ndarray[Any, np.dtype[Any]] = np.hstack(signal).astype(madam.SIGNAL_TYPE)
+signal_array: np.ndarray[Any, np.dtype[Any]] = np.hstack(signal).astype(
+    madam.SIGNAL_TYPE
+)
 periods_array: np.ndarray[Any, np.dtype[Any]] = np.array(periods)
 
 nsample = timestamps_array.size
