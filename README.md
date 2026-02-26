@@ -1,18 +1,28 @@
-# crabpol 
-This package contains the analysis tools for the processing of observations of the Crab nebula (also known as Tau-A or M1) by Planck (sub-mm wavelengths) and IXPE (X-ray wavelengths) satellites. Specifically, for the Planck data:
-1) Procurement of NPIPE Time-Ordered Data (TOD)
-2) Implementation of mapmaking methods: libmadam wrapper, binning in HealPix pixelization scheme, binning onto a square grid with user-defined number of pixels/pixel size
-3) Computation of Unit Conversion (UC) and Colour Correction (CC) for a power-law SED and implementation of these corrections to NPIPE TOD using Planck RIMO files.
-4) Conversions between different coordinate systems.
-5) Visualisation tools to display Stokes I, Q, U maps of the object and an option to overplot polarization vectors.
-
-And for the IXPE data:
-1) Filtering of events within energy windows
-2) Application of corrections with the ARF and MRF files
-3) Map-making by binning the events onto a square grid (valid in flat-approximation)
-4) Visualisation tools to display Stokes I, Q, U maps of the object and an option to overplot polarization vectors.
+# crabpol
+### Python package for processing of Planck [NPIPE](https://www.aanda.org/articles/aa/full_html/2020/11/aa38073-20/aa38073-20.html) Time-ordered Data (TOD) and [IXPE](https://arxiv.org/abs/2112.01269) observations of the Crab Nebula
+This package contains the analysis tools for the processing of observations of the Crab nebula (also known as Tau-A or M1) by Planck (sub-mm) and IXPE (X-ray) satellites. It supports map-making, unit conversions and visualization, turning raw satellite observations into maps ready for analysis. 
 
 ![Static Badge](https://img.shields.io/badge/GitHub-Vyoma--M-blue?link=https%3A%2F%2Fgithub.com%2FVyoma-M)
+
+## Features
+Planck/NPIPE TOD:
+1) Load and pre-process NPIPE Time-Ordered Data  datasets
+2) Map-making: Binning data into HEALPix or a square grid (flat-field approximation) pixelization scheme
+3) Optional unit conversion and colour correction
+4) Conversions between different coordinate systems
+5) Visualise Stokes I, Q, and U maps with overlay of polarization vectors
+6) Tools for variable aperture photometry
+
+IXPE:
+1) Filtering of events within energy windows
+2) Application of corrections with the Ancillary and Response Matrix files
+3) Map-making by binning the events onto a square grid (valid in flat-approximation)
+4) Visualise Stokes I, Q, and U maps with overlay of polarization vectors
+
+Other
+- Compute polarisation degree and position angle
+- Flexible workflow for research and analysis
+
 
 ## Installation
 - By cloning the repository:
@@ -32,29 +42,12 @@ Test your installation with:
 cd crabpol
 pytest
 ```
-## Workflow
-The basic order of functionalities for NPIPE TOD-processing and map-making (data reduction) are:
-![Data processing flowchart](aux/npipe_crappol_flowchart.png)
-The most basic order of using the tools within this repo is (it is assumed that you have acquired the NPIPE TOD small datasets from the public archive):
-
-1) Acquire the relevant columns of data from the FITS files of NPIPE TOD and assimilate them into the format for compatibility with other tools within the repository
-2) Make binned maps from the acquired destriped TOD
-3) Visualise the maps and estimate physical quantities of interest about the target such as flux densities, polarization degree and position angle of polarization in the presence of polarized emission (like polarized synchrotron emission in the case of Crab nebula)
-
-#### On Colour Correction and background subtraction
-
-The functionalities with broken arrows are optional and dependent on the target under study. This repository was developed for the analysis of the Crab nebula. We find from the observed flux densities in the sub-mm that it shows a power-law spectral profile with an index of -0.28. So one needs to compute colour correction for a power-law SED with index -0.28 and either apply them at the TOD level or at the map level. Similarly, background corrections can be first estimated by creating a binned map, selecting an annular region excluding target emission and obtaining an estimate of the flux in K_CMB units. This can then be applied at the TOD level before making maps.
-
-Note: Applying colour correction also applies a unit conversion to MJy/sr.
-
-#### On Map-making
-Map-making is a data reduction method with the benefit of making pretty visualisations of the data. There are two options available for map-making:
-1) Binning in [HEALPix](https://arxiv.org/abs/astro-ph/0409513) pixelization scheme
-2) Binning on a square grid with user-defined pixel size and side length (in number of pixels) for small fields for which flat approximation applies
 
 ## Quick start
 An example for a quick end-to-end map-making routine from NPIPE TOD:
 ```
+</> Python
+
 from crabpol import Get_TOD, GetTODConfig, MapMaker 
 
 # 1) Configure with variables of interest
@@ -76,23 +69,38 @@ mm = MapMaker(tod_loader=tod_loader, npix=80, pixel_size=1.5)
 # 4) Make a healpix map by binning the destriped TOD.
 bmap = mm._bin_tod_healpix(freq=cfg.freq, nside=cfg.nside)
 ```
-This routine takes the relevant data columns from the NPIPE TOD and bins them into maps with HEALPix pixelization scheme. The [examples](https://github.com/Vyoma-M/crabpol/tree/main/examples) folder contains more example routines for a demonstration of other functionalities within this repository.
+This routine takes the relevant data columns from the NPIPE TOD and bins them into maps with [HEALPix](https://arxiv.org/abs/astro-ph/0409513) pixelization scheme. 
+For more examples: [examples folder](https://github.com/Vyoma-M/crabpol/tree/main/examples)
+
+## Workflow
+1. Acquire relevant columns from TOD/IXPE event files
+2. Pre-process (filtering, coordinate transformation, optional corrections for bandpass, effective area, calibration)
+3. Bin into Stokes I, Q, U maps
+4. Visualise maps and analyse them to obtain flux densities and characteristics of polarised emission like polarisation degree and position angle of polarisation
+<details><summary>Advanced Usage: Colour Correction and Background Subtraction</summary>
+
+#### On Colour Correction
+- Compute colour correction for a power-law spectral index (eg. -0.28 for Crab nebula)
+- Apply corrections at TOD or map level
+- Applying colour corrections also converts units to MJy/sr
+
+#### Background Subtraction
+One needs an estimate of the background flux to apply this correction. 
+- Make Stokes I, Q, U maps by binning the TOD.
+- Estimate background flux by selecting an annular region outside of the target emission
+- Apply subtraction at TOD level before map-making
+
+#### Map-making
+Map-making is a data reduction method with the benefit of making pretty visualisations of the data. There are two options available for map-making:
+- Binning in [HEALPix](https://arxiv.org/abs/astro-ph/0409513) pixelization scheme
+- Binning on a square grid with user-defined pixel size and side length (in number of pixels) for small fields for which flat approximation applies
+</details>
+
+
 
 ## Contributing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on:
-- Setting up a development environment
-- Running tests and linters locally
-- Making pull requests
-- Code quality standards (black, isort, flake8, mypy)
-
-For quick local setup:
-```bash
-pip install -e .
-pip install -r requirements-dev.txt
-pre-commit install
-pytest
-```
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, testing and style guidelines.
 
 ## Acknowledgement
 If you found this package useful for your work, please cite my thesis:
