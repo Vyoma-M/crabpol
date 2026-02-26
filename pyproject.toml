@@ -27,5 +27,8 @@ classifiers=[
     ]
 [project.urls]
 "Repository" = "https://github.com/Vyoma-M/crabpol"
+[tool.black]
+target-versions = ["py39", "py310", "py311"]
+line-length = 88
 [tool.pytest.ini_options]
 testpaths = ["tests"]
