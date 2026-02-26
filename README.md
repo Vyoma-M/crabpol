@@ -77,7 +77,7 @@ For more examples: [examples folder](https://github.com/Vyoma-M/crabpol/tree/mai
 2. Pre-process (filtering, coordinate transformation, optional corrections for bandpass, effective area, calibration)
 3. Bin into Stokes I, Q, U maps
 4. Visualise maps and analyse them to obtain flux densities and characteristics of polarised emission like polarisation degree and position angle of polarisation
-<details><summary>Advanced Usage: Colour Correction and Background Subtraction</summary>
+<details><summary>Advanced Usage: Colour Correction, Background Subtraction and Map-making</summary>
 
 #### On Colour Correction
 - Compute colour correction for a power-law spectral index (eg. -0.28 for Crab nebula)
