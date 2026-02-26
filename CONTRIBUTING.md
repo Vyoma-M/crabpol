@@ -40,7 +40,7 @@ flake8 crabpol
 mypy crabpol --ignore-missing-imports
 
 # Run tests
-pytest crabpol -v
+pytest -v
 ```
 
 Or run all at once:
