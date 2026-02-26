@@ -81,7 +81,7 @@ jobs:
 
       - name: Run tests with pytest
         run: |
-          pytest crabpol -v --cov=crabpol --cov-report=xml
+          pytest -v --cov=crabpol --cov-report=xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
